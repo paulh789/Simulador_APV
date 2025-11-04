@@ -1,0 +1,13 @@
+#pycache
+app/pycache/
+app/migrations/pycache/
+simulador_banco/pycache/
+
+#migraciones (excepto las necesarias)
+app/migrations/*.py
+
+#archivos de configuracion
+*.pyc
+
+#db
+db.sqlite3

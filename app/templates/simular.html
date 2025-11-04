@@ -1,0 +1,24 @@
+{% load static %}
+{% include 'navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simular | Simulador Tributario</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script type="module" src="{% static 'js/simular.js' %}"></script>
+</head>
+<body>
+  <main>
+    <h2>Simulación de beneficio tributario y rentabilidad</h2>
+
+    <div id="datos" data-uf="{{ indicadores.uf }}" style="display: none;"></div>
+
+    <div id="simulaciones-container"></div>
+
+    <button id="btn-nueva" class="btn">Nueva simulación</button>
+  </main>
+</body>
+</html>

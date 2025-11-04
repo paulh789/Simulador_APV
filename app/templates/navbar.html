@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<nav class="navbar">
+  <div class="navbar-container">
+    <h1 class="navbar-title">Simulador de beneficio tributario y rentabilidad</h1>
+    <ul class="navbar-links">
+      <a href="{% url 'simular' %}" 
+        class="nav-link{% if active_page == 'simular' %} active{% endif %}">
+        Simular
+      </a>
+      <a href="{% url 'indicadores' %}" 
+        class="nav-link{% if active_page == 'indicadores' %} active{% endif %}">
+        Indicadores
+      </a>
+    </ul>
+  </div>
+</nav>
