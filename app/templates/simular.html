@@ -7,18 +7,121 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simular | Simulador Tributario</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/simular.css' %}">
   <script type="module" src="{% static 'js/simular.js' %}"></script>
 </head>
 <body>
   <main>
     <h2>Simulación de beneficio tributario y rentabilidad</h2>
 
-    <div id="datos" data-uf="{{ indicadores.uf }}" style="display: none;"></div>
+    <div id="datos" 
+     data-uf="{{ indicadores.uf }}"
+     data-utm="{{ indicadores.utm }}"
+     data-tramos='{{ tramos_json|safe }}' 
+     hidden>
+    </div>
 
-    <div id="simulaciones-container"></div>
+    <div id="simulacion-container">
+      <div class="simulacion-box" id="form">
+        <div class="simulacion-seccion">
+          <h4>Datos del cliente</h4>
+          <div class="simulacion-grid">
+            <div class="input-group">
+                <label for="renta">Renta bruta (mensual):</label>
+                <input type="text" id="renta" maxlength="12" placeholder="Ej: 3.200.000">
+            </div>
+            <div class="input-group">
+              <label for="aporte">Aporte mensual:</label>
+              <div class="select-inline">
+                <select id="tipo-aporte">
+                    <option value="UF" selected>UF</option>
+                    <option value="CLP">CLP</option>
+                </select>
+                <input type="text" id="aporte" maxlength="6" placeholder="Ej: 10">
+                <div class="conversion-preview" id="preview-aporte">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="simulacion-seccion">
+          <h4>Datos bancarios</h4>
+          <div class="simulacion-grid">
+            <div class="input-group">
+                <label for="anios">Años a simular:</label>
+                <input type="number" id="anios" maxlength="2" placeholder="Ej: 5" min="1" max="30">
+            </div>
+            <div class="input-group">
+              <label for="tasa">Tasa de rentabilidad (%):</label>
+              <input type="number" id="tasa" maxlength="5" placeholder="Ej: 8,5" step="1" min="0" max="100">
+            </div>
+            <div class="input-group">
+                <label for="cobertura">Cobertura (UF):</label>
+                <input type="text" id="cobertura" maxlength="5" placeholder="Ej: 500">
+            </div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn" id="btn-simular">Simular</button>
+          <button class="btn" id="btn-pdf" hidden>Generar PDF</button>
+        </div>
+      </div>
+    </div>
 
-    <button id="btn-nueva" class="btn">Nueva simulación</button>
   </main>
+  <!-- Modal de resultados -->
+  <div id="modal" class="modal">
+    <div class="resultados modal-contenido">
+      <span id="modal-cerrar" class="close">&times;</span>
+      <h1>Resultados de la simulación</h1>
+
+      <!-- ======= SECCIÓN 1: RÉGIMEN TRIBUTARIO ======= -->
+      <section class="resultados-seccion">
+        <h2>Régimen tributario</h2>
+
+        <!-- Datos -->
+        <div class="resultados-datos">
+          <div><strong>Renta bruta:</strong> <span id="dato-renta"></span></div>
+          <div style="text-align: center;"><strong>Aporte mensual:</strong> <span id="dato-aporte"></span></div>
+          <div style="text-align: end;"><strong>Aporte anual:</strong> <span id="dato-aporte-anual">—</span></div>
+        </div>
+
+        <!-- Comparación de APV -->
+        <div class="regimen-grid" id="modal-regimen-grid"></div>
+
+      <!-- ======= SECCIÓN 2: RENTABILIDAD ======= -->
+      <section class="resultados-seccion">
+        <h2>Rentabilidad</h2>
+        
+        <!-- Datos -->
+        <div class="resultados-datos">
+          <div><strong>Período:</strong> <span id="dato-anios"></span></div>
+          <div style="text-align: center;"><strong>Tasa de rentabilidad:</strong> <span id="dato-tasa"></span></div>
+          <div style="text-align: end;"><strong>Cobertura:</strong> <span id="dato-cobertura"></span></div>
+        </div>
+
+        <!-- Tabla rentabilidad -->
+        <table class="tabla-rentabilidad">
+          <thead>
+            <tr>
+              <th>Año</th>
+              <th>Capital inicial</th>
+              <th>Aporte anual</th>
+              <th>Rentabilidad</th>
+              <th>Nuevo capital</th>
+              <th style="width: 90px">Costo cobertura (UF)</th>
+              <th class="capital-final-th">Capital final</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-rentabilidad-body"></tbody>
+        </table>
+      </section>
+
+      <div class="modal-buttons">
+        <button class="btn" id="btn-eliminar">Eliminar</button>
+        <button class="btn" id="btn-guardar">Guardar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

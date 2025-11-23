@@ -1,0 +1,71 @@
+/* --- INDICADORES --- */
+.indicadores-box {
+  display: flex;
+  gap: 2rem;
+  padding: 0.5rem 0rem;
+  margin-bottom: 1rem;
+  align-items: center;
+
+}
+
+.indicador {
+  background: #ffffff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  border-left: 4px solid #003058;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  width: 120px;
+  text-align: center;
+}
+
+.indicadores-box p {
+  margin: 0;
+}
+
+/* --- CONVERSOR --- */
+.converter-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.result-box {
+  min-width: 300px;
+  height: 2.2rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+/* --- TABLA IU --- */
+.table-iu {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.table-iu thead {
+  background-color: #003058;
+  color: white;
+}
+
+.table-iu th,
+.table-iu td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+.table-iu th {
+  font-weight: bold;
+}

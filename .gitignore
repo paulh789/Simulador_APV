@@ -9,5 +9,8 @@ app/migrations/*.py
 #archivos de configuracion
 *.pyc
 
+#guia
+guia/
+
 #db
 db.sqlite3

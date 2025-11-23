@@ -19,9 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Mostrar formateado
-    elems.uf.textContent = `$ ${formatoPesos(valores.uf)}`;
-    elems.utm.textContent = `$ ${formatoPesos(valores.utm)}`;
-    elems.dolar.textContent = `$ ${formatoPesos(valores.dolar)}`;
+    elems.uf.textContent = `$${formatoPesos(valores.uf)}`;
+    elems.utm.textContent = `$${formatoPesos(valores.utm)}`;
+    elems.dolar.textContent = `$${formatoPesos(valores.dolar)}`;
 
     // Guardar para la conversión
     window.tasas = valores;
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (texto.includes('MÁS')) return;
         const valor = parseFloat(texto);
         if (!isNaN(valor)) {
-        td.textContent = `$ ${formatoPesos(valor)}`;
+        td.textContent = `$${formatoPesos(valor)}`;
         }
     });
 });

@@ -15,6 +15,7 @@ def actualizar_datos():
     """
     # Indicadores
     now = timezone.localtime(timezone.now()).date()
+    print(now.strftime("%d/%m/%Y"))
     indicadores = Indicadores.objects.last()
     # Si no hay datos guardados aún o están desactualizados:
     if not indicadores or indicadores.fecha_actualizacion < now:

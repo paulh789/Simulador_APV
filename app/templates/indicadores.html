@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Indicadores | Simulador Tributario</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/indicadores.css' %}">
 </head>
 <body>
   {% include 'navbar.html' %}
@@ -13,52 +14,48 @@
     <h2>Indicadores Económicos</h2>
 
     {% if indicadores %}
-    <p><strong>Fecha actualización:</strong> {{ indicadores.fecha_actualizacion }}</p>
-
-    <div class="result-box"
+    <div class="indicadores-box"
         id="indicadores"
         data-uf="{{ indicadores.uf }}"
         data-utm="{{ indicadores.utm }}"
         data-dolar="{{ indicadores.dolar }}">
-      <p><strong>UF:</strong> <span id="uf" data-valor="{{ indicadores.uf }}"></span></p>
-      <p><strong>UTM:</strong> <span id="utm" data-valor="{{ indicadores.utm }}"></span></p>
-      <p><strong>Dólar:</strong> <span id="dolar" data-valor="{{ indicadores.dolar }}"></span></p>
+      <div class="indicador"><strong>UF:</strong> <span id="uf" data-valor="{{ indicadores.uf }}"></span></div>
+      <div class="indicador"><strong>UTM:</strong> <span id="utm" data-valor="{{ indicadores.utm }}"></span></div>
+      <div class="indicador"><strong>Dólar:</strong> <span id="dolar" data-valor="{{ indicadores.dolar }}"></span></div>
+      <p>Actualizados al {{ indicadores.fecha_actualizacion }}</p>
     </div>
 
-  <h3>Conversor de valores</h3>
+    <h3>Conversor de valores</h3>
 
-  <div class="converter-container">
-    <div class="input-group">
-      <label for="tipo">Conversión:</label>
-      <select id="tipo" oninput="convertir()">
-        <option value="uf">UF → CLP</option>
-        <option value="utm">UTM → CLP</option>
-        <option value="dolar">Dólar → CLP</option>
-        <option value="clp_uf">CLP → UF</option>
-        <option value="clp_utm">CLP → UTM</option>
-        <option value="clp_dolar">CLP → Dólar</option>
-      </select>
+    <div class="converter-container">
+      <div class="input-group">
+        <label for="tipo">Conversión:</label>
+        <select id="tipo" oninput="convertir()">
+          <option value="uf">UF → CLP</option>
+          <option value="utm">UTM → CLP</option>
+          <option value="dolar">Dólar → CLP</option>
+          <option value="clp_uf">CLP → UF</option>
+          <option value="clp_utm">CLP → UTM</option>
+          <option value="clp_dolar">CLP → Dólar</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="valor">Monto:</label>
+        <input type="number" id="valor" placeholder="Ingresa el monto" oninput="convertir()">
+      </div>
+
+      <div class="input-group">
+        <label>Resultado:</label>
+        <div id="resultado" class="result-box small"></div>
+      </div>
     </div>
-
-    <div class="input-group">
-      <label for="valor">Monto:</label>
-      <input type="number" id="valor" placeholder="Ingresa el monto" oninput="convertir()">
-    </div>
-
-    <div class="input-group">
-      <label>Resultado:</label>
-      <div id="resultado" class="result-box small"></div>
-    </div>
-  </div>
-
-  <button class="btn" onclick="convertir()">Convertir</button>
-
 
     {% else %}
       <p>No hay indicadores registrados aún.</p>
     {% endif %}
 
-    <hr style="margin: 2rem 0;">
+    <hr style="margin: 1.25rem 0 2rem 0;">
 
     <h2 id="titulo-tabla"
         data-mes="{{ tramos.0.mes }}"
@@ -66,57 +63,57 @@
       Tabla de Impuesto Único
     </h2>
 
-  {% if tramos %}
-  <div style="overflow-x:auto;">
-    <table id="tabla-impuesto" class="table-1">
-    <thead>
-      <tr>
-        <th>Desde</th>
-        <th>Hasta</th>
-        <th>Factor</th>
-        <th>Rebaja</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for tramo in tramos %}
-      <tr class="{% cycle 'row-white' 'row-gray' %}">
-        <td data-tipo="clp">
-          {% if tramo.desde %}
-            {{ tramo.desde }}
-          {% else %}
-            -.- 
-          {% endif %}
-        </td>
-        <td data-tipo="clp">
-          {% if tramo.hasta %}
-            {{ tramo.hasta }}
-          {% else %}
-            Y MÁS
-          {% endif %}
-        </td>
-        <td>
-          {% if tramo.factor %}
-            {{ tramo.factor }}
-          {% else %}
-            Exento
-          {% endif %}
-        </td>
-        <td data-tipo="clp">
-          {% if tramo.rebaja %}
-            {{ tramo.rebaja }}
-          {% else %}
-            -.- 
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    {% if tramos %}
+    <div style="overflow-x:auto;">
+      <table id="tabla-impuesto" class="table-iu">
+      <thead>
+        <tr>
+          <th>Desde</th>
+          <th>Hasta</th>
+          <th>Factor</th>
+          <th>Rebaja</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tramo in tramos %}
+        <tr class="{% cycle 'row-white' 'row-gray' %}">
+          <td data-tipo="clp">
+            {% if tramo.desde %}
+              {{ tramo.desde }}
+            {% else %}
+              -.- 
+            {% endif %}
+          </td>
+          <td data-tipo="clp">
+            {% if tramo.hasta %}
+              {{ tramo.hasta }}
+            {% else %}
+              Y MÁS
+            {% endif %}
+          </td>
+          <td>
+            {% if tramo.factor %}
+              {{ tramo.factor }}
+            {% else %}
+              Exento
+            {% endif %}
+          </td>
+          <td data-tipo="clp">
+            {% if tramo.rebaja %}
+              {{ tramo.rebaja }}
+            {% else %}
+              -.- 
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  </div>
-  {% else %}
-    <p>No hay tabla de impuestos registrada.</p>
-  {% endif %}
+    </div>
+    {% else %}
+      <p>No hay tabla de impuestos registrada.</p>
+    {% endif %}
 
   </main>
   <script type="module" src="{% static 'js/indicadores.js' %}"></script>
