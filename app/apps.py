@@ -14,4 +14,3 @@ class AppConfig(AppConfig):
 
         from app.utils import actualizar_datos
         actualizar_datos()
-

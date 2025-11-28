@@ -1,0 +1,298 @@
+[
+{
+  "model": "app.indicadores",
+  "pk": 1,
+  "fields": {
+    "fecha_actualizacion": "2025-10-29",
+    "uf": 39587.48,
+    "utm": 69265.0,
+    "dolar": 941.63
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 3,
+  "fields": {
+    "fecha_actualizacion": "2025-10-31",
+    "uf": 39597.67,
+    "utm": 69265.0,
+    "dolar": 940.57
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 4,
+  "fields": {
+    "fecha_actualizacion": "2025-11-01",
+    "uf": 39602.77,
+    "utm": 69542.0,
+    "dolar": 962.39
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 5,
+  "fields": {
+    "fecha_actualizacion": "2025-11-03",
+    "uf": 39607.87,
+    "utm": 69542.0,
+    "dolar": 959.19
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 6,
+  "fields": {
+    "fecha_actualizacion": "2025-11-04",
+    "uf": 39618.08,
+    "utm": 69542.0,
+    "dolar": 940.53
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 7,
+  "fields": {
+    "fecha_actualizacion": "2025-11-05",
+    "uf": 39623.18,
+    "utm": 69542.0,
+    "dolar": 945.13
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 8,
+  "fields": {
+    "fecha_actualizacion": "2025-11-10",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 946.24
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 9,
+  "fields": {
+    "fecha_actualizacion": "2025-11-11",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 940.85
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 10,
+  "fields": {
+    "fecha_actualizacion": "2025-11-12",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 936.89
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 11,
+  "fields": {
+    "fecha_actualizacion": "2025-11-15",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 925.63
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 12,
+  "fields": {
+    "fecha_actualizacion": "2025-11-17",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 925.63
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 13,
+  "fields": {
+    "fecha_actualizacion": "2025-11-19",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 929.26
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 14,
+  "fields": {
+    "fecha_actualizacion": "2025-11-20",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 931.36
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 15,
+  "fields": {
+    "fecha_actualizacion": "2025-11-22",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 929.0
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 16,
+  "fields": {
+    "fecha_actualizacion": "2025-11-23",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 929.0
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 17,
+  "fields": {
+    "fecha_actualizacion": "2025-11-24",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 937.36
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 18,
+  "fields": {
+    "fecha_actualizacion": "2025-11-25",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 937.36
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 19,
+  "fields": {
+    "fecha_actualizacion": "2025-11-26",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 937.15
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 20,
+  "fields": {
+    "fecha_actualizacion": "2025-11-27",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 930.89
+  }
+},
+{
+  "model": "app.indicadores",
+  "pk": 21,
+  "fields": {
+    "fecha_actualizacion": "2025-11-28",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 930.89
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 3,
+  "fields": {
+    "desde": 0.0,
+    "hasta": 938817.0,
+    "factor": 0.0,
+    "rebaja": 0.0,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 4,
+  "fields": {
+    "desde": 938817.01,
+    "hasta": 2086260.0,
+    "factor": 0.04,
+    "rebaja": 37552.68,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 5,
+  "fields": {
+    "desde": 2086260.01,
+    "hasta": 3477100.0,
+    "factor": 0.08,
+    "rebaja": 121003.08,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 6,
+  "fields": {
+    "desde": 3477100.01,
+    "hasta": 4867940.0,
+    "factor": 0.135,
+    "rebaja": 312243.58,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 7,
+  "fields": {
+    "desde": 4867940.01,
+    "hasta": 6258780.0,
+    "factor": 0.23,
+    "rebaja": 774697.88,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 8,
+  "fields": {
+    "desde": 6258780.01,
+    "hasta": 8345040.0,
+    "factor": 0.304,
+    "rebaja": 1237847.6,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 9,
+  "fields": {
+    "desde": 8345040.01,
+    "hasta": 21558020.0,
+    "factor": 0.35,
+    "rebaja": 1621719.44,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 10,
+  "fields": {
+    "desde": 21558020.01,
+    "hasta": null,
+    "factor": 0.4,
+    "rebaja": 2699620.44,
+    "anio": 2025,
+    "mes": 11
+  }
+}
+]
