@@ -6,8 +6,12 @@ class AppConfig(AppConfig):
 
     def ready(self):
         import sys
-        # Evitar ejecutar en comandos de administración
-        if "runserver" in sys.argv:
-            from app.utils import actualizar_datos
-            actualizar_datos()
+        # Evita ejecución en comandos de administración
+        blocked_commands = ['collectstatic', 'migrate', 'makemigrations', 'test', 'shell']
+
+        if any(cmd in sys.argv for cmd in blocked_commands):
+            return  # No ejecutar actualizar_datos en estos casos
+
+        from app.utils import actualizar_datos
+        actualizar_datos()
 

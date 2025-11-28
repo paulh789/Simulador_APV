@@ -12,5 +12,8 @@ app/migrations/*.py
 #guia
 guia/
 
+#media
+media/
+
 #db
 db.sqlite3
