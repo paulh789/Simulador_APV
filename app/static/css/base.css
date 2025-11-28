@@ -13,10 +13,10 @@
   flex-wrap: wrap;
 }
 
-.navbar-title h1 {
-  font-size: 1.3rem;
+.navbar-title {
+  font-size: 1.8em;
   color: #ffffff;
-  margin: 0;
+  margin: 0.5rem 1rem;
 }
 
 .navbar-links {

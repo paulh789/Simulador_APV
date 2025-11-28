@@ -19,6 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
     elems.utm.textContent = `$${formatoCL(valores.utm, 2)}`;
     elems.dolar.textContent = `$${formatoCL(valores.dolar, 2)}`;
 
+    // --- Formatear input ---
+    function formatearInput(input) {
+        let val = input.value;
+        if (val === "") return;
+        let num = parseFloat(val.replace(",", "."));
+        if (num < 0) input.value = "0";
+        if (num > 999999999999999) input.value = "999999999999999";
+        if (val.length > 15) input.value = val.slice(0, 15);
+    };
+    
     // --- Función de conversión ---
     const valorInput = document.getElementById("valor");
     const tipoSelect = document.getElementById("tipo");
@@ -69,6 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Eventos ---
     tipoSelect.addEventListener("input", convertir);
-    valorInput.addEventListener("input", convertir);
+    valorInput.addEventListener("input", () => {
+        formatearInput(valorInput);
+        convertir();
+    });
 
 });

@@ -93,14 +93,14 @@
 
 .simulacion-grid {
   display: flex;
-  flex-direction: row; /* Alinear horizontalmente */
+  flex-direction: row;
   align-items: flex-start;
-  gap: 6rem; /* Espacio entre los campos */
+  gap: 6rem;
 }
 
 .simulacion-grid .input-group {
-  flex: 0 0 auto; /* No crecer, no encoger */
-  width: auto; /* Ajuste natural */
+  flex: 0 0 auto;
+  width: auto;
 }
 
 .select-inline {
@@ -195,11 +195,11 @@
   border-radius: 8px;
   padding: 1rem;
   display: flex;
-  flex-direction: column; /* clave */
+  flex-direction: column;
 }
 
 .regimen-top {
-  min-height: 96px; /* ajusta según estética */
+  min-height: 96px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -251,7 +251,7 @@
   display: none;
   position: fixed;
   z-index: 1000;
-  inset: 0;                     /* reemplaza Top/Left/Width/Height */
+  inset: 0;
   background-color: rgba(0,0,0,0.4);
   overflow-y: scroll;
   padding: 40px 0;
@@ -347,7 +347,7 @@
 }
 
 .input-costo-uf {
-  width: 48px;
+  width: 36px;
   padding: 2px 2px;
   font-size: 0.95rem;
   text-align: center;
@@ -355,14 +355,12 @@
   border: 1px solid #ccc;
 }
 
-/* quitar flechas de número en Chrome/Safari */
 .input-costo-uf[type=number]::-webkit-outer-spin-button,
 .input-costo-uf[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* y en Firefox */
 .input-costo-uf[type=number] {
   -moz-appearance: textfield;
 }
@@ -379,7 +377,7 @@
   cursor: pointer;
   line-height: normal;
   padding: 2px 0 1px 0;
-  border-radius: 50%;          /* círculo */
+  border-radius: 50%;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
@@ -437,12 +435,12 @@
 /* --- VISTA EN OTROS DISPOSITIVOS --- */
 @media (max-width: 650px) {
   .simulacion-grid {
-      flex-direction: column;   /* ahora sí se apilan verticalmente */
-      gap: 1rem;                /* espacio más razonable */
+      flex-direction: column;
+      gap: 1rem;
   }
 
   .simulacion-grid .input-group {
-      width: 100%;              /* que ocupen todo el ancho */
+      width: 100%;
   }
 
   .select-inline {

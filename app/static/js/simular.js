@@ -686,10 +686,13 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMsg.id = "form-error-msg";
     errorMsg.style.color = "#d11a2a";
     errorMsg.style.marginTop = "0px";
-    errorMsg.style.marginLeft = "1px";
+    errorMsg.style.marginLeft = "2rem";
     errorMsg.style.fontWeight = "600";
+    errorMsg.style.alignItems = "center";
     errorMsg.style.display = "none";
-    form.appendChild(errorMsg);
+    //form.appendChild(errorMsg);
+    const buttons = document.querySelector(".buttons");
+    buttons.appendChild(errorMsg);
 
     btnSimular.addEventListener("click", (e) => {
         e.preventDefault();
@@ -739,7 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
             input.style.borderColor = "#d11a2a";
             });
             errorMsg.textContent = mensaje || "Rellena los campos faltantes";
-            errorMsg.style.display = "block";
+            errorMsg.style.display = "flex";
             return; // No continuar
         }
 
@@ -764,7 +767,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         if (existe) {
             errorMsg.textContent = "Esta simulación ya existe";
-            errorMsg.style.display = "block";
+            errorMsg.style.display = "flex";
             return;
         }
 
