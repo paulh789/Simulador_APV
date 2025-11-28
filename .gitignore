@@ -1,16 +1,14 @@
 #pycache
 app/pycache/
+app/management/commands/pycache/
 app/migrations/pycache/
-simulador_banco/pycache/
+simulador_apv/pycache/
 
 #migraciones (excepto las necesarias)
 app/migrations/*.py
 
 #archivos de configuracion
 *.pyc
-
-#guia
-guia/
 
 #media
 media/
