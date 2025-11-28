@@ -86,7 +86,7 @@ input {
 
 .input-group {
   display: flex;
-  flex-direction: column;    /* Label arriba, input abajo */
+  flex-direction: column;
   align-items: flex-start;
   gap: 0.3rem;
 }
@@ -96,7 +96,16 @@ input {
   white-space: nowrap;
 }
 
-.input-group select,
+.input-group select {
+  width: auto;
+  height: 2.2rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
 .input-group input {
   width: 160px;
   height: 2.2rem;
