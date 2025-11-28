@@ -1,12 +1,15 @@
 {% load static %}
+{% load num_filters %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Indicadores | Simulador Tributario</title>
+  <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/indicadores.css' %}">
+  <script type="module" src="{% static 'js/indicadores.js' %}"></script>
 </head>
 <body>
   {% include 'navbar.html' %}
@@ -30,7 +33,7 @@
     <div class="converter-container">
       <div class="input-group">
         <label for="tipo">Conversión:</label>
-        <select id="tipo" oninput="convertir()">
+        <select id="tipo">
           <option value="uf">UF → CLP</option>
           <option value="utm">UTM → CLP</option>
           <option value="dolar">Dólar → CLP</option>
@@ -42,12 +45,12 @@
 
       <div class="input-group">
         <label for="valor">Monto:</label>
-        <input type="number" id="valor" placeholder="Ingresa el monto" oninput="convertir()">
+        <input type="number" id="valor" placeholder="Ingresa el monto">
       </div>
 
       <div class="input-group">
         <label>Resultado:</label>
-        <div id="resultado" class="result-box small"></div>
+        <div id="resultado" class="result-box"></div>
       </div>
     </div>
 
@@ -60,12 +63,12 @@
     <h2 id="titulo-tabla"
         data-mes="{{ tramos.0.mes }}"
         data-anio="{{ tramos.0.anio }}">
-      Tabla de Impuesto Único
+      Tabla de Impuesto Único ({{ tramos.0.mes | nombre_mes }} {{ tramos.0.anio }})
     </h2>
 
     {% if tramos %}
     <div style="overflow-x:auto;">
-      <table id="tabla-impuesto" class="table-iu">
+      <table id="tabla-impuesto" class="tabla-iu">
       <thead>
         <tr>
           <th>Desde</th>
@@ -79,28 +82,28 @@
         <tr class="{% cycle 'row-white' 'row-gray' %}">
           <td data-tipo="clp">
             {% if tramo.desde %}
-              {{ tramo.desde }}
+              ${{ tramo.desde | formatoCL  }}
             {% else %}
               -.- 
             {% endif %}
           </td>
           <td data-tipo="clp">
             {% if tramo.hasta %}
-              {{ tramo.hasta }}
+              ${{ tramo.hasta | formatoCL }}
             {% else %}
               Y MÁS
             {% endif %}
           </td>
           <td>
             {% if tramo.factor %}
-              {{ tramo.factor }}
+              {{ tramo.factor | porcentaje}}%
             {% else %}
               Exento
             {% endif %}
           </td>
           <td data-tipo="clp">
             {% if tramo.rebaja %}
-              {{ tramo.rebaja }}
+              ${{ tramo.rebaja | formatoCL  }}
             {% else %}
               -.- 
             {% endif %}
@@ -116,6 +119,5 @@
     {% endif %}
 
   </main>
-  <script type="module" src="{% static 'js/indicadores.js' %}"></script>
 </body>
 </html>

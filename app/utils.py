@@ -1,11 +1,9 @@
-import pandas as pd
-import numpy as np
 from django.utils import timezone
 import requests
 from bs4 import BeautifulSoup
-import re
-from datetime import datetime
 from app.models import *
+import json
+from playwright.sync_api import sync_playwright
 
 def actualizar_datos():
     """
@@ -45,7 +43,22 @@ def actualizar_datos():
             print("Error al actualizar tabla:", e) 
     else:
         print("Tabla IU ya está actualizada")
-    
+
+def obtener_datos(tramos_as_json=False):
+    """
+    Obtiene los indicadores diarios y la tabla de impuesto único desde la BD.
+    """
+    # Indicadores actualizados
+    indicadores = Indicadores.objects.last()
+    # Tabla de impuesto actualizada
+    ultimo_tramo = TramoImpuesto.objects.order_by('-anio', '-mes').first()
+    tramos = []
+    if ultimo_tramo:
+        tramos = TramoImpuesto.objects.filter(anio=ultimo_tramo.anio, mes=ultimo_tramo.mes).order_by('desde')
+        if tramos_as_json:
+            # Convertir queryset a JSON simple
+            tramos = json.dumps(list(tramos.values('desde', 'hasta', 'factor', 'rebaja', 'anio', 'mes')))
+    return indicadores, tramos
 
 def guardar_indicadores(datos):
     """
@@ -62,7 +75,7 @@ def guardar_indicadores(datos):
     )
     print(f"Indicadores guardados correctamente ({'nuevo' if creado else 'actualizado'})")
 
-def limpiar_valor(valor):
+def limpiar_valor_tabla_impuestos(valor):
     """
     Limpia los valores de la tabla de impuestos del SII.
     """
@@ -112,7 +125,7 @@ def scrapear_tabla_impuestos(anio):
     }
 
     r = requests.get(url, headers=headers)
-    r.raise_for_status()  # levanta error si falla la request
+    r.raise_for_status() # levanta error si falla la request
 
     soup = BeautifulSoup(r.content, "html.parser")
 
@@ -141,18 +154,18 @@ def scrapear_tabla_impuestos(anio):
 
     # Recorremos filas
     tramos = []
-    filas = tabla.find_all("tr")[3:]  # saltamos encabezados
+    filas = tabla.find_all("tr")[3:] # saltamos encabezados
     for fila in filas:
         celdas = fila.find_all("td")
         if len(celdas) < 6:
-            continue  # ignoramos filas incompletas
+            continue # ignoramos filas incompletas
         periodo = celdas[0].text.strip()
         if periodo != "" and periodo.upper() != "MENSUAL":
-            return tramos  # solo interesa mensual
-        desde_val = limpiar_valor(celdas[1].text.strip())
-        hasta_val = limpiar_valor(celdas[2].text.strip())
-        factor_val = limpiar_valor(celdas[3].text.strip())
-        rebaja_val = limpiar_valor(celdas[4].text.strip())
+            return tramos # solo interesa mensual
+        desde_val = limpiar_valor_tabla_impuestos(celdas[1].text.strip())
+        hasta_val = limpiar_valor_tabla_impuestos(celdas[2].text.strip())
+        factor_val = limpiar_valor_tabla_impuestos(celdas[3].text.strip())
+        rebaja_val = limpiar_valor_tabla_impuestos(celdas[4].text.strip())
         tramo = {
             "desde": desde_val,
             "hasta": hasta_val,
@@ -177,3 +190,25 @@ def guardar_tabla_impuestos(tramos):
             rebaja = tramo["rebaja"],
         )
     print(f"Tabla IU guardada correctamente")
+
+def render_pdf_from_html(html_content: str, pdf_path: str):
+    """
+    Genera un PDF en la ruta especificada a partir de un HTML.
+    """
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+
+        # Cargar el HTML directamente
+        page.set_content(html_content, wait_until="networkidle")
+
+        # Exportar el PDF
+        page.pdf(
+            path=pdf_path,
+            format="A4",
+            scale=0.825,
+            margin={"top": "40px", "bottom": "40px", "left": "20px", "right": "20px"},
+            print_background=True,
+        )
+
+        browser.close()

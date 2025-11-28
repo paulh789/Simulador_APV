@@ -5,7 +5,9 @@ class AppConfig(AppConfig):
     name = 'app'
 
     def ready(self):
-        # Importar aquí para evitar problemas de import circular
-        from app.utils import actualizar_datos
-        actualizar_datos()
+        import sys
+        # Evitar ejecutar en comandos de administración
+        if "runserver" in sys.argv:
+            from app.utils import actualizar_datos
+            actualizar_datos()
 

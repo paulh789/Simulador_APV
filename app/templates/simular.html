@@ -6,7 +6,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token }}" />
   <title>Simular | Simulador Tributario</title>
+  <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/simular.css' %}">
   <script type="module" src="{% static 'js/simular.js' %}"></script>
@@ -18,7 +20,7 @@
     <div id="datos" 
      data-uf="{{ indicadores.uf }}"
      data-utm="{{ indicadores.utm }}"
-     data-tramos='{{ tramos_json|safe }}' 
+     data-tramos='{{ tramos|safe }}' 
      hidden>
     </div>
 
@@ -32,9 +34,13 @@
                 <input type="text" id="renta" maxlength="12" placeholder="Ej: 3.200.000">
             </div>
             <div class="input-group">
-              <label for="aporte">Aporte mensual:</label>
+              <label for="aporte">Aporte:</label>
               <div class="select-inline">
                 <select id="tipo-aporte">
+                    <option value="mensual" selected>Mensual</option>
+                    <option value="unico">Único</option>
+                </select>
+                <select id="moneda-aporte">
                     <option value="UF" selected>UF</option>
                     <option value="CLP">CLP</option>
                 </select>
@@ -80,11 +86,7 @@
         <h2>Régimen tributario</h2>
 
         <!-- Datos -->
-        <div class="resultados-datos">
-          <div><strong>Renta bruta:</strong> <span id="dato-renta"></span></div>
-          <div style="text-align: center;"><strong>Aporte mensual:</strong> <span id="dato-aporte"></span></div>
-          <div style="text-align: end;"><strong>Aporte anual:</strong> <span id="dato-aporte-anual">—</span></div>
-        </div>
+        <div class="resultados-datos" id="datos-regimen"></div>
 
         <!-- Comparación de APV -->
         <div class="regimen-grid" id="modal-regimen-grid"></div>
@@ -106,10 +108,10 @@
             <tr>
               <th>Año</th>
               <th>Capital inicial</th>
-              <th>Aporte anual</th>
+              <th id="aporte-anual-th">Aporte anual</th>
               <th>Rentabilidad</th>
               <th>Nuevo capital</th>
-              <th style="width: 90px">Costo cobertura (UF)</th>
+              <th class="costo-uf-th">Costo cobertura (UF)</th>
               <th class="capital-final-th">Capital final</th>
             </tr>
           </thead>

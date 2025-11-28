@@ -1,0 +1,480 @@
+{% load num_filters %}
+{% load simple_tags %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+/* --- GENERAL --- */
+body {
+  background-color: #ffffff;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #4a4a4a;
+  margin: 0;
+  padding: 1rem;
+}
+
+h1 {
+  color: #4a4a4a;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  color: #00263d;
+  margin-top: 0;
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+/* --- INFORMACIÓN APV --- */
+.informacion-box {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.informacion-apv {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 3rem;
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+}
+
+.linea-apv {
+  height: 1px;
+  background-color: #ccc;
+  width: 100%;
+  margin: 0.8rem 0;
+}
+
+/* --- TABLA IU --- */
+.tabla-iu {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.tabla-iu thead {
+  background-color: #003058;
+  color: white;
+}
+
+.tabla-iu th,
+.tabla-iu td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+.tabla-iu th {
+  font-weight: bold;
+}
+
+.row-white {
+  background-color: #ffffff;
+}
+
+.row-gray {
+  background-color: #f5f5f5;
+}
+
+/* --- RESULTADOS --- */
+.resultados {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.resultados h1 {
+  font-size: 1.5rem;
+  color: #4a4a4a;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  display: inline-block;
+  padding-bottom: 0.2rem;
+}
+
+.resultados h2 {
+  font-size: 1.15rem;
+  color: #003058;
+  border-bottom: 2px solid #00f9f4;
+  display: inline-block;
+  padding-bottom: 0.2rem;
+}
+
+.resultados h3 {
+  color: #003058;
+  margin-bottom: 0.6rem;
+}
+
+.resultados h4 {
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #003058;
+}
+
+.resultados h5 {
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #4a4a4a;
+}
+
+.resultados-seccion {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.resultados-datos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  background: #f8f8f8;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.regimen-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.regimen-box {
+  flex: 1 1 44%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.regimen-top {
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.regimen-header {
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.regimen-bottom {
+  margin-top: 0.5rem;
+}
+
+.regimen-bottom p {
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+}
+
+.recommended {
+  border: 2px solid #08a812;
+  background-color: #15ff000d;
+}
+
+.not-recommended {
+  border: 2px solid #ccc;
+}
+
+.badge-recomendado {
+  background-color: #3fbf3f;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.regimen-box .descripcion {
+  font-size: 0.9rem;
+  color: #444;
+  margin-top: 0;
+  margin-bottom: 
+  0.5rem;
+}
+/* --- TABLA RENTABILIDAD --- */
+.tabla-rentabilidad {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.tabla-rentabilidad th,
+.tabla-rentabilidad td {
+  border: 1px solid #ddd;
+  padding: 0.4rem;
+  text-align: center;
+}
+
+.tabla-rentabilidad thead {
+  background-color: #003058;
+  color: white;
+}
+
+.capital-final-td {
+  font-weight: bold;
+}
+
+.costo-uf-th {
+  width: 100px;
+}
+</style>
+</head>
+<body>
+
+  <!-- INFORMACIÓN APV -->
+  <section>
+    <h1>Información APV</h1>
+
+    <!-- BENEFICIO TRIBUTARIO -->
+    <div class="informacion-box">
+
+      <h2>Beneficio Tributario</h2>
+
+      <div class="informacion-apv">
+
+        <div style="grid-column:1; grid-row:1; font-weight: bold;">APV Régimen A</div>
+        <div class="linea-apv" style="grid-column:1; grid-row:2;"></div>
+        <div style="grid-column:1; grid-row:3;">
+          El Estado te bonificará anualmente con un <strong>15%</strong> del ahorro neto del año anterior.
+        </div>
+        <div class="linea-apv" style="grid-column:1; grid-row:4;"></div>
+        <div style="grid-column:1; grid-row:5;">
+          Tope anual de 6 UTM (${% mult 6 context.valorUTM %}).
+        </div>
+
+        <div style="grid-column:2; grid-row:1; font-weight: bold;">APV Régimen B</div>
+        <div class="linea-apv" style="grid-column:2; grid-row:2;"></div>
+        <div style="grid-column:2; grid-row:3;">
+          El ahorro voluntario se rebajará directamente de tu renta imponible, lo que te permitirá <strong>pagar menos impuestos</strong>. 
+          Dicho de otra manera, este beneficio te permite <strong>postergar el pago de tus impuestos</strong> por tus ahorros hasta el momento en que te pensiones, cuando posiblemente tengas una tasa de impuesto menor a la que tienes hoy.
+        </div>
+        <div class="linea-apv" style="grid-column:2; grid-row:4;"></div>
+        <div style="grid-column:2; grid-row:5;">
+          Tope anual de 600 UF (${% mult 600 context.valorUF %}).
+        </div>
+
+        <div style="grid-column:3; grid-row:1; font-weight: bold;">Depósitos Convenidos</div>
+        <div class="linea-apv" style="grid-column:3; grid-row:2;"></div>
+        <div style="grid-column:3; grid-row:3;">
+          A través de un acuerdo con tu empleador podrás armar un plan de ahorro voluntario para tu pensión.
+          Este <strong>no estará afecto al impuesto a la renta</strong> hasta que sea retirado como pensión.
+        </div>
+        <div class="linea-apv" style="grid-column:3; grid-row:4;"></div>
+        <div style="grid-column:3; grid-row:5;">
+          Tope anual de 900 UF (${% mult 900 context.valorUF %}).
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLA DE IMPUESTO ÚNICO -->
+    <div class="informacion-box">
+      <h2>Tabla de Impuesto Único ({{ context.tramos.0.mes | nombre_mes }} {{ context.tramos.0.anio }})</h2>
+      <div style="overflow-x:auto;">
+        <table class="tabla-iu">
+          <thead>
+            <tr>
+              <th>Desde</th>
+              <th>Hasta</th>
+              <th>Factor</th>
+              <th>Rebaja</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for tramo in context.tramos %}
+            <tr class="{% cycle 'row-white' 'row-gray' %}">
+              <td data-tipo="clp">
+                {% if tramo.desde %}
+                  ${{ tramo.desde | formatoCL }}
+                {% else %}
+                  -.- 
+                {% endif %}
+              </td>
+              <td data-tipo="clp">
+                {% if tramo.hasta %}
+                  ${{ tramo.hasta | formatoCL }}
+                {% else %}
+                  Y MÁS
+                {% endif %}
+              </td>
+              <td>
+                {% if tramo.factor %}
+                  {{ tramo.factor | porcentaje }}%
+                {% else %}
+                  Exento
+                {% endif %}
+              </td>
+              <td data-tipo="clp">
+                {% if tramo.rebaja %}
+                  ${{ tramo.rebaja | formatoCL }}
+                {% else %}
+                  -.- 
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="page-break"></div>
+
+  <!-- SIMULACIONES -->
+  <section>
+    <h1>Resultados simulación</h1>
+    {% for sim in simulaciones %}
+    <div class="resultados" style="display: block;">
+      <h1>Simulación #{{sim.id}}</h1>
+      <!-- RÉGIMEN TRIBUTARIO -->
+      <section class="resultados-seccion">
+        <h2>Régimen tributario</h2>
+
+        <div class="resultados-datos">                
+          <div><strong>Renta bruta:</strong> ${{ sim.inputs.renta | formatoCL }}</div>
+          {% if sim.inputs.tipoAporte == 'mensual' %}
+          <div style="text-align:center;"><strong>Aporte mensual:</strong> ${{ sim.inputs.aporte | formatoCL }}</div>
+          <div style="text-align:end;"><strong>Aporte anual:</strong> ${% mult sim.inputs.aporte 12 %}</div>
+          {% else %}
+          <div style="text-align: center;"><strong>Aporte único:</strong> ${{ sim.inputs.aporte | formatoCL }}</div>
+          <div></div>
+          {% endif %}
+        </div>
+
+        <div class="regimen-grid">
+
+          {% if sim.outputs.regimenA.recomendado %}
+          <div class="regimen-box recommended">
+          {% else %}
+          <div class="regimen-box not-recommended">
+          {% endif %}
+            <div class="regimen-top">
+              <div class="regimen-header">
+                <h4>APV Régimen A</h4>
+                {% if sim.outputs.regimenA.recomendado %}
+                <span class="badge-recomendado" style="display: inline-block;">Recomendado</span>
+                {% endif %}
+              </div>
+              <p class="descripcion">
+              El Estado entrega una bonificación anual del <strong>{{ sim.outputs.regimenA.tasa | porcentaje }}%</strong> del aporte, con un tope de 6 UTM.
+              </p>
+            </div>
+            <hr style="margin: 0.2rem 0 0.1rem;">
+            <div class="regimen-bottom">
+              <h5>Bonificación fiscal</h5>
+              <p>Mensual: <span><strong>${{ sim.outputs.regimenA.beneficioMensual | formatoCL }}</strong></span></p>
+              {% if sim.outputs.regimenA.esTope %}
+              <p>Anual: <span><strong>${{ sim.outputs.regimenA.beneficioAnual | formatoCL }} (tope)</strong></span></p>
+              {% else %}
+              <p>Anual: <span><strong>${{ sim.outputs.regimenA.beneficioAnual | formatoCL }}</strong></span></p>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if sim.outputs.regimenB.recomendado %}
+          <div class="regimen-box recommended">
+          {% else %}
+          <div class="regimen-box not-recommended">
+          {% endif %}
+            <div class="regimen-top">
+              <div class="regimen-header">
+                <h4>APV Régimen B</h4>
+                {% if sim.outputs.regimenB.recomendado %}
+                <span class="badge-recomendado" style="display: inline-block;">Recomendado</span>
+                {% endif %}
+              </div>
+              <p class="descripcion">
+              El ahorro voluntario se reduce de la renta imponible, lo que se traduce en una rebaja de impuestos (con tope de 600 UF).<br>
+              La tasa de impuesto a rebajar para la renta es del <strong>{{ sim.outputs.regimenB.tasa | porcentaje }}%</strong>.
+              </p>
+            </div>
+            <hr style="margin: 0.2rem 0 0.1rem;">
+            <div class="regimen-bottom">
+              <h5>Rebaja tributaria</h5>
+              {% if sim.inputs.tipoAporte == 'mensual' %}
+              <p>Mensual: <span><strong>${{ sim.outputs.regimenB.beneficioMensual | formatoCL }}</strong></span></p>
+              {% else %}
+              <p>Mensual: <span><strong>—</strong></span></p>
+              {% endif %}
+              {% if sim.outputs.regimenB.esTope %}
+              <p>Anual: <span><strong>${{ sim.outputs.regimenB.beneficioAnual | formatoCL }} (tope)</strong></span></p>
+              {% else %}
+              <p>Anual: <span><strong>${{ sim.outputs.regimenB.beneficioAnual | formatoCL }}</strong></span></p>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+      <section class="resultados-seccion">
+        <h2>Rentabilidad</h2>
+        <div class="resultados-datos">
+          <div><strong>Período:</strong> {{ sim.inputs.anios }} años</div>
+          <div style="text-align:center;"><strong>Tasa de rentabilidad:</strong> {{ sim.inputs.tasaRentabilidad }}%</div>
+          <div style="text-align:end;"><strong>Cobertura:</strong> {{ sim.inputs.cobertura | formatoCL }} UF</div>
+        </div>
+        <table class="tabla-rentabilidad">
+          <thead>
+            <tr>
+              <th>Año</th>
+              <th>Capital inicial</th>
+              {% if sim.inputs.tipoAporte == 'mensual' %}
+              <th>Aporte anual</th>
+              {% endif %}
+              <th>Rentabilidad</th>
+              <th>Nuevo capital</th>
+              <th style="width: 90px">Costo cobertura (UF)</th>
+              <th class="capital-final-th">Capital final</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fila in sim.outputs.tablaRentabilidad %}
+            <tr class="{% cycle 'row-white' 'row-gray' %}">
+              <td>{{ fila.0 }}</td>
+              <td>${{ fila.1 | formatoCL }}</td>
+              {% if sim.inputs.tipoAporte == 'mensual' %}
+              {% if fila.2 %}
+              <td>${{ fila.2 | formatoCL }}</td>
+              {% else %}
+              <td>—</td>
+              {% endif %}
+              {% endif %}
+              <td>${{ fila.3 | formatoCL }}</td>
+              <td>${{ fila.4 | formatoCL }}</td>
+              <td>{{ fila.5 }}</td>
+              <td class="capital-final-td">${{ fila.6 | formatoCL }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+    
+    {% if not forloop.last %}
+    <div class="page-break"></div>
+    {% endif %}
+
+    {% endfor %}
+
+  </section>
+
+</body>
+</html>
