@@ -1,0 +1,108 @@
+[
+{
+  "model": "app.indicadores",
+  "pk": 1,
+  "fields": {
+    "fecha_actualizacion": "2025-11-28",
+    "uf": 39643.59,
+    "utm": 69542.0,
+    "dolar": 930.89
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 3,
+  "fields": {
+    "desde": 0.0,
+    "hasta": 938817.0,
+    "factor": 0.0,
+    "rebaja": 0.0,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 4,
+  "fields": {
+    "desde": 938817.01,
+    "hasta": 2086260.0,
+    "factor": 0.04,
+    "rebaja": 37552.68,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 5,
+  "fields": {
+    "desde": 2086260.01,
+    "hasta": 3477100.0,
+    "factor": 0.08,
+    "rebaja": 121003.08,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 6,
+  "fields": {
+    "desde": 3477100.01,
+    "hasta": 4867940.0,
+    "factor": 0.135,
+    "rebaja": 312243.58,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 7,
+  "fields": {
+    "desde": 4867940.01,
+    "hasta": 6258780.0,
+    "factor": 0.23,
+    "rebaja": 774697.88,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 8,
+  "fields": {
+    "desde": 6258780.01,
+    "hasta": 8345040.0,
+    "factor": 0.304,
+    "rebaja": 1237847.6,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 9,
+  "fields": {
+    "desde": 8345040.01,
+    "hasta": 21558020.0,
+    "factor": 0.35,
+    "rebaja": 1621719.44,
+    "anio": 2025,
+    "mes": 11
+  }
+},
+{
+  "model": "app.tramoimpuesto",
+  "pk": 10,
+  "fields": {
+    "desde": 21558020.01,
+    "hasta": null,
+    "factor": 0.4,
+    "rebaja": 2699620.44,
+    "anio": 2025,
+    "mes": 11
+  }
+}
+]

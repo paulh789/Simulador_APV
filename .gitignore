@@ -15,5 +15,8 @@ guia/
 #media
 media/
 
+#venv
+venv/
+
 #db
 db.sqlite3
