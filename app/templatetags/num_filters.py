@@ -8,14 +8,14 @@ locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
 def formatoCL(n):
     """
     Convierte el número n al formato chileno con punto separador de miles 
-    y coma separador decimal.
+    y coma separador decimal (máximo 3 decimales).
     """
     s = str(n)
     if "." in s:
         _, dec = s.split(".")
     else:
         dec = ""
-    return locale.format_string(f"%.{len(dec) if dec != "0" else 0}f", n, grouping=True)
+    return locale.format_string(f"%.{min(len(dec), 3) if dec != "0" else 0}f", n, grouping=True)
 
 @register.filter
 def porcentaje(t):

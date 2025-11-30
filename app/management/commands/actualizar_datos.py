@@ -5,5 +5,8 @@ class Command(BaseCommand):
     help = "Actualizar indicadores diarios"
 
     def handle(self, *args, **kwargs):
-        actualizar_datos()
-        self.stdout.write(self.style.SUCCESS("Indicadores actualizados"))
+        actualizacion = actualizar_datos()
+        if actualizacion == 1:
+            self.stdout.write(self.style.SUCCESS("Indicadores actualizados"))
+        elif actualizacion == -1:
+            self.stdout.write(self.style.ERROR("Error al acutalizar indicadores"))

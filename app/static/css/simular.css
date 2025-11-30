@@ -173,14 +173,28 @@
 }
 
 .resultados-datos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  display: flex;
   background: #f8f8f8;
   padding: 0.6rem 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   font-weight: 500;
+}
+
+.dato-izq {
+  width: 33.33%;
+}
+
+.dato-cen {
+  min-width: 33.33%;
+  max-width: 50%;
+  text-align: center;
+}
+
+.dato-der {
+  width: auto;
+  margin-left: auto;
+  text-align: end;
 }
 
 .regimen-grid {

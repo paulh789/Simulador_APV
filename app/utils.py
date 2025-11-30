@@ -8,13 +8,15 @@ from playwright.sync_api import sync_playwright
 def actualizar_datos():
     """
     Actualiza los indicadores diarios y la tabla de impuesto único en la BD.
-    Si los datos almacenados ya están actualizados no se hace nada, sino, se obtienen de
-    páginas web y se guardan en la BD.
+    Si los datos almacenados ya están actualizados no se hace nada y retorna 0, sino, 
+    se obtienen de páginas web y se guardan en la BD, retornando 1. Si hay error se
+    retorna -1.
     """
     # Indicadores
     now = timezone.localtime(timezone.now()).date()
     print(now.strftime("%d/%m/%Y"))
     indicadores = Indicadores.objects.last()
+    estado = 0
     # Si no hay datos guardados aún o están desactualizados:
     if not indicadores or indicadores.fecha_actualizacion < now:
         try:
@@ -26,11 +28,14 @@ def actualizar_datos():
                             "utm": data["utm"]["valor"],
                             "dolar": data["dolar"]["valor"]}
             guardar_indicadores(nuevos_datos)
+            estado = 1
         except Exception as e:
             # usar los últimos datos si falla
             print("Error al actualizar indicadores:", e)
+            estado = -1
     else: 
         print("Indicadores ya están actualizados")
+
     # Tabla IU
     ultimo_tramo = TramoImpuesto.objects.last()
     # Si no hay datos guardados aún o están desactualizados:
@@ -40,9 +45,11 @@ def actualizar_datos():
             tramos = scrapear_tabla_impuestos(now.year)
             guardar_tabla_impuestos(tramos)
         except Exception as e:
-            print("Error al actualizar tabla:", e) 
+            print("Error al actualizar tabla:", e)
+            estado = -1
     else:
         print("Tabla IU ya está actualizada")
+    return estado
 
 def obtener_datos(tramos_as_json=False):
     """

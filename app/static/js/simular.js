@@ -150,14 +150,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Funciones tabla de rentabilidad ---
     function crearTablaRentabilidad(tipoAporte, aporteAnual, tasaRentabilidad, costoInicial, numAnios) {
         let anio = 1;
-        let capital = aporteAnual;
-        if (tipoAporte === "unico") aporteAnual = 0;
-        let rentabilidad = parseInt(capital*tasaRentabilidad);
-        let nuevoCapital = capital+rentabilidad;
+        let capital;
+        if (tipoAporte === "unico") {
+            capital = aporteAnual;
+            aporteAnual = 0;
+        }
+        else {
+            capital = 0;
+        }
+        let rentabilidad = parseInt((capital+aporteAnual)*tasaRentabilidad);
+        let nuevoCapital = capital+aporteAnual+rentabilidad;
         let costoUF = costoInicial;
         let costoCLP = parseInt(costoUF*valorUF);
         let capitalFinal = Math.max(nuevoCapital-costoCLP, 0);
-        const tabla = [[anio, capital, 0, rentabilidad, nuevoCapital, costoUF, capitalFinal]];
+        const tabla = [[anio, capital, aporteAnual, rentabilidad, nuevoCapital, costoUF, capitalFinal]];
         anio++;
         for (anio; anio<=numAnios; anio++) {
             capital = capitalFinal;
@@ -184,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${fila[0]}</td>
-                <td>$${formatoCL(fila[1])}</td>
+                <td>${i === 0 && fila[1] === 0 ? "—" : "$" + formatoCL(fila[1])}</td>
                 <td style="display: ${aporteDisplay};">${fila[2] === 0 ? "—" : "$" + formatoCL(fila[2])}</td>
                 <td>$${formatoCL(fila[3])}</td>
                 <td>$${formatoCL(fila[4])}</td>
@@ -313,24 +319,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- Modal con resultados ---
-    function abrirModal(renta, tipoAporte, aporte, anios, tasa, cobertura) {
+    function abrirModal(renta, tipoAporte, aporteCLP, aporteUF, anios, tasa, cobertura) {
 
         // datos régimen tributario
+        const aporteStr = `$${formatoCL(aporteCLP)} (${formatoCL(aporteUF, 1)} UF)`;
         let aporteAnual;
         if (tipoAporte === "mensual") {
-            aporteAnual = aporte*12;
+            aporteAnual = aporteCLP*12;
             datosRegimen.innerHTML = `
-                <div><strong>Renta bruta:</strong> $${formatoCL(renta)}</div>
-                <div style="text-align: center;"><strong>Aporte mensual:</strong> $${formatoCL(aporte)}</div>
-                <div style="text-align: end;"><strong>Aporte anual:</strong> $${formatoCL(aporteAnual)}</div>
+                <div class="dato-izq"><strong>Renta bruta:</strong> $${formatoCL(renta)}</div>
+                <div class="dato-cen"><strong>Aporte mensual:</strong> ${aporteStr}</div>
+                <div class="dato-der"><strong>Aporte anual:</strong> $${formatoCL(aporteAnual)}</div>
             `;
         }
         else {
-            aporteAnual = aporte;
+            aporteAnual = aporteCLP;
             datosRegimen.innerHTML = `
-                <div><strong>Renta bruta:</strong> $${formatoCL(renta)}</div>
-                <div style="text-align: center;"><strong>Aporte único:</strong> $${formatoCL(aporte)}</div>
-                <div></div>
+                <div class="dato-izq"><strong>Renta bruta:</strong> $${formatoCL(renta)}</div>
+                <div class="dato-cen"><strong>Aporte único:</strong> ${aporteStr}</div>
             `;
         }
         
@@ -436,7 +442,8 @@ document.addEventListener("DOMContentLoaded", () => {
             inputs: {
                 renta: renta,
                 tipoAporte: tipoAporte,
-                aporte: aporte,
+                aporteCLP: aporteCLP,
+                aporteUF: aporteUF,
                 anios: anios,
                 tasaRentabilidad: tasa,
                 cobertura: cobertura
@@ -510,20 +517,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let displayAporte;
         let datosRegimen;
+        const aporteStr = `$${formatoCL(sim.inputs.aporteCLP)} (${formatoCL(sim.inputs.aporteUF, 1)} UF)`;
         if (sim.inputs.tipoAporte === "mensual") {
             displayAporte = "table-cell";
             datosRegimen = `
-                <div><strong>Renta bruta:</strong> $${formatoCL(sim.inputs.renta)}</div>
-                <div style="text-align:center;"><strong>Aporte mensual:</strong> $${formatoCL(sim.inputs.aporte)}</div>
-                <div style="text-align:end;"><strong>Aporte anual:</strong> $${formatoCL(sim.inputs.aporte*12)}</div>
+                <div class="dato-izq"><strong>Renta bruta:</strong> $${formatoCL(sim.inputs.renta)}</div>
+                <div class="dato-cen""><strong>Aporte mensual:</strong> ${aporteStr}</div>
+                <div class="dato-der""><strong>Aporte anual:</strong> $${formatoCL(sim.inputs.aporteCLP*12)}</div>
             `;
         }
         else {
             displayAporte = "none";
             datosRegimen = `
-                <div><strong>Renta bruta:</strong> $${formatoCL(sim.inputs.renta)}</div>
-                <div style="text-align:center;"><strong>Aporte único:</strong> $${formatoCL(sim.inputs.aporte)}</div>
-                <div></div>
+                <div class="dato-izq"><strong>Renta bruta:</strong> $${formatoCL(sim.inputs.renta)}</div>
+                <div class="dato-cen"><strong>Aporte único:</strong> ${aporteStr}</div>
             `;
         }
 
@@ -553,9 +560,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <section class="resultados-seccion">
                     <h2>Rentabilidad</h2>
                     <div class="resultados-datos">
-                        <div><strong>Período:</strong> ${sim.inputs.anios} años</div>
-                        <div style="text-align:center;"><strong>Tasa de rentabilidad:</strong> ${sim.inputs.tasaRentabilidad}%</div>
-                        <div style="text-align:end;"><strong>Cobertura:</strong> ${sim.inputs.cobertura} UF</div>
+                        <div class="dato-izq"><strong>Período:</strong> ${sim.inputs.anios} años</div>
+                        <div class="dato-cen"><strong>Tasa de rentabilidad:</strong> ${sim.inputs.tasaRentabilidad}%</div>
+                        <div class="dato-der"><strong>Cobertura:</strong> ${sim.inputs.cobertura} UF</div>
                     </div>
                     <table class="tabla-rentabilidad">
                         <thead>
@@ -570,10 +577,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             </tr>
                         </thead>
                         <tbody>
-                            ${sim.outputs.tablaRentabilidad.map(f => `
-                                <tr class="${f[0]%2 === 0 ? "row-gray" : "row-white"}">
+                            ${sim.outputs.tablaRentabilidad.map((f, i) => `
+                                <tr class="${i%2 === 0 ? "row-white" : "row-gray"}">
                                     <td>${f[0]}</td>
-                                    <td>$${formatoCL(f[1])}</td>
+                                    <td>${i === 0 && f[1] === 0 ? "—" : "$" + formatoCL(f[1])}</td>
                                     <td style="display: ${displayAporte}">${f[2] === 0 ? "—" : "$" + formatoCL(f[2])}</td>
                                     <td>$${formatoCL(f[3])}</td>
                                     <td>$${formatoCL(f[4])}</td>
@@ -625,6 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnPDF.addEventListener("click", () => {
         // Evitar múltiples clics
         btnPDF.disabled = true;
+        btnSimular.disabled = true;
         btnPDF.classList.add("btn-loading");
         const originalText = btnPDF.innerHTML;
         btnPDF.innerHTML = "Generando...";
@@ -663,6 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .finally(() => {
             btnPDF.disabled = false;
+            btnSimular.disabled = false;
             btnPDF.classList.remove("btn-loading");
             btnPDF.innerHTML = originalText;
         });
@@ -746,9 +755,18 @@ document.addEventListener("DOMContentLoaded", () => {
             return; // No continuar
         }
 
-        // parsear a enteros
+        // parsear a números
         const rentaNum = parseInt(renta);
-        const aporteNum = monedaAporte === "CLP" ? parseInt(aporte) : parseInt(aporte*valorUF);
+        let aporteCLP;
+        let aporteUF;
+        if (monedaAporte === "CLP") {
+            aporteCLP = parseInt(aporte);
+            aporteUF = parseFloat((aporte/valorUF).toFixed(1));
+        }
+        else {
+            aporteUF = parseFloat(aporte);
+            aporteCLP = parseInt(aporte*valorUF);
+        }
         const coberturaNum = parseInt(cobertura);
         const aniosNum = parseInt(anios);
         const tasaNum = parseFloat(tasa);
@@ -757,7 +775,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const simulacionInputs = {
             renta: rentaNum,
             tipoAporte: tipoAporte,
-            aporte: aporteNum,
+            aporteCLP: aporteCLP,
+            aporteUF: aporteUF,
             anios: aniosNum,
             tasaRentabilidad: tasaNum,
             cobertura: coberturaNum
@@ -772,7 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // si todo está bien -> abrir modal
-        abrirModal(rentaNum, tipoAporte, aporteNum, aniosNum, tasaNum, coberturaNum);
+        abrirModal(rentaNum, tipoAporte, aporteCLP, aporteUF, aniosNum, tasaNum, coberturaNum);
     });
 
 });

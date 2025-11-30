@@ -16,5 +16,8 @@ media/
 #venv
 venv/
 
+#todo
+todo
+
 #db
 db.sqlite3

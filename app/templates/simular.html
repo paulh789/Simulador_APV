@@ -6,7 +6,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token }}" />
-  <title>Simular | Simulador Tributario</title>
+  <title>Simular | Simulador APV</title>
   <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/simular.css' %}">
@@ -81,7 +81,7 @@
       <span id="modal-cerrar" class="close">&times;</span>
       <h1>Resultados de la simulación</h1>
 
-      <!-- ======= SECCIÓN 1: RÉGIMEN TRIBUTARIO ======= -->
+      <!-- RÉGIMEN TRIBUTARIO -->
       <section class="resultados-seccion">
         <h2>Régimen tributario</h2>
 
@@ -91,15 +91,15 @@
         <!-- Comparación de APV -->
         <div class="regimen-grid" id="modal-regimen-grid"></div>
 
-      <!-- ======= SECCIÓN 2: RENTABILIDAD ======= -->
+      <!-- RENTABILIDAD -->
       <section class="resultados-seccion">
         <h2>Rentabilidad</h2>
         
         <!-- Datos -->
         <div class="resultados-datos">
-          <div><strong>Período:</strong> <span id="dato-anios"></span></div>
-          <div style="text-align: center;"><strong>Tasa de rentabilidad:</strong> <span id="dato-tasa"></span></div>
-          <div style="text-align: end;"><strong>Cobertura:</strong> <span id="dato-cobertura"></span></div>
+          <div class="dato-izq"><strong>Período:</strong> <span id="dato-anios"></span></div>
+          <div class="dato-cen"><strong>Tasa de rentabilidad:</strong> <span id="dato-tasa"></span></div>
+          <div class="dato-der"><strong>Cobertura:</strong> <span id="dato-cobertura"></span></div>
         </div>
 
         <!-- Tabla rentabilidad -->
