@@ -133,14 +133,28 @@ h2 {
 }
 
 .resultados-datos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  display: flex;
   background: #f8f8f8;
   padding: 0.6rem 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
   font-weight: 500;
+}
+
+.dato-izq {
+  width: 33.33%;
+}
+
+.dato-cen {
+  min-width: 33.33%;
+  max-width: 50%;
+  text-align: center;
+}
+
+.dato-der {
+  width: auto;
+  margin-left: auto;
+  text-align: end;
 }
 
 .regimen-grid {
@@ -348,13 +362,12 @@ h2 {
         <h2>Régimen tributario</h2>
 
         <div class="resultados-datos">                
-          <div><strong>Renta bruta:</strong> ${{ sim.inputs.renta | formatoCL }}</div>
+          <div class="dato-izq"><strong>Renta bruta:</strong> ${{ sim.inputs.renta | formatoCL }}</div>
           {% if sim.inputs.tipoAporte == 'mensual' %}
-          <div style="text-align:center;"><strong>Aporte mensual:</strong> ${{ sim.inputs.aporte | formatoCL }}</div>
-          <div style="text-align:end;"><strong>Aporte anual:</strong> ${% mult sim.inputs.aporte 12 %}</div>
+          <div class="dato-cen"><strong>Aporte mensual:</strong> ${{ sim.inputs.aporteCLP | formatoCL }} ({{ sim.inputs.aporteUF | formatoCL}} UF)</div>
+          <div class="dato-der"><strong>Aporte anual:</strong> ${% mult sim.inputs.aporteCLP 12 %}</div>
           {% else %}
-          <div style="text-align: center;"><strong>Aporte único:</strong> ${{ sim.inputs.aporte | formatoCL }}</div>
-          <div></div>
+          <div class="dato-cen"><strong>Aporte único:</strong> ${{ sim.inputs.aporteCLP | formatoCL }} ({{ sim.inputs.aporteUF | formatoCL}} UF)</div>
           {% endif %}
         </div>
 
@@ -427,9 +440,9 @@ h2 {
       <section class="resultados-seccion">
         <h2>Rentabilidad</h2>
         <div class="resultados-datos">
-          <div><strong>Período:</strong> {{ sim.inputs.anios }} años</div>
-          <div style="text-align:center;"><strong>Tasa de rentabilidad:</strong> {{ sim.inputs.tasaRentabilidad }}%</div>
-          <div style="text-align:end;"><strong>Cobertura:</strong> {{ sim.inputs.cobertura | formatoCL }} UF</div>
+          <div class="dato-izq"><strong>Período:</strong> {{ sim.inputs.anios }} años</div>
+          <div class="dato-cen"><strong>Tasa de rentabilidad:</strong> {{ sim.inputs.tasaRentabilidad }}%</div>
+          <div class="dato-der"><strong>Cobertura:</strong> {{ sim.inputs.cobertura | formatoCL }} UF</div>
         </div>
         <table class="tabla-rentabilidad">
           <thead>
@@ -449,13 +462,13 @@ h2 {
             {% for fila in sim.outputs.tablaRentabilidad %}
             <tr class="{% cycle 'row-white' 'row-gray' %}">
               <td>{{ fila.0 }}</td>
-              <td>${{ fila.1 | formatoCL }}</td>
-              {% if sim.inputs.tipoAporte == 'mensual' %}
-              {% if fila.2 %}
-              <td>${{ fila.2 | formatoCL }}</td>
-              {% else %}
+              {% if forloop.counter == 1 and not fila.1 %}
               <td>—</td>
+              {% else %}
+              <td>${{ fila.1 | formatoCL }}</td>
               {% endif %}
+              {% if sim.inputs.tipoAporte == 'mensual' %}
+              <td>${{ fila.2 | formatoCL }}</td>
               {% endif %}
               <td>${{ fila.3 | formatoCL }}</td>
               <td>${{ fila.4 | formatoCL }}</td>
