@@ -3,10 +3,10 @@
   "model": "app.indicadores",
   "pk": 1,
   "fields": {
-    "fecha_actualizacion": "2025-11-28",
+    "fecha_actualizacion": "2025-11-30",
     "uf": 39643.59,
     "utm": 69542.0,
-    "dolar": 930.89
+    "dolar": 929.14
   }
 },
 {

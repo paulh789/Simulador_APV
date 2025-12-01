@@ -43,4 +43,10 @@ def pdf_simulacion(request):
     with open(pdf_path, "rb") as f:
         pdf_data = f.read()
 
+    # Borrar archivo temporal
+    try:
+        os.remove(pdf_path)
+    except FileNotFoundError:
+        pass
+
     return HttpResponse(pdf_data, content_type="application/pdf")
