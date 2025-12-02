@@ -31,6 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             input.value = parseInt(soloNumeros, 10).toLocaleString("es-CL");
+            if (input.style.borderColor != "#ccc") {
+                input.style.borderColor = "#ccc";
+            }
         }, 125); // delay de 125 ms
     };
 
@@ -40,8 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (val === "") return;
         let num = parseFloat(val.replace(",", "."));
         if (num < 0) input.value = "0";
-        if (num > 100) input.value = "100";
+        else if (num > 100) input.value = "100";
         if (val.length > 5) input.value = val.slice(0, 5);
+        if (input.style.borderColor != "#ccc") {
+            input.style.borderColor = "#ccc";
+        }
     };
 
     // --- Formatear años ---
@@ -54,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (num > 30) num = 30;
 
         input.value = num;
+        if (input.style.borderColor != "#ccc") {
+            input.style.borderColor = "#ccc";
+        }
     };
 
     // --- Formatear cobertura ---
@@ -69,6 +78,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (num > 99999) num = 99999;
 
             input.value = num.toLocaleString("es-CL");
+            if (input.style.borderColor != "#ccc") {
+                input.style.borderColor = "#ccc";
+            }
         }, 120);
     };
 
@@ -733,13 +745,13 @@ document.addEventListener("DOMContentLoaded", () => {
             camposInvalidos.push(aporteInput);
             mensaje = "Ingresa un aporte válido mayor que 0";
         }
-        else if (tasa === "" || isNaN(tasa) || parseFloat(tasa) < 0 || parseFloat(tasa) > 100) {
-            camposInvalidos.push(tasaInput);
-            mensaje = "Ingresa una tasa entre 0 y 100";
-        }
         else if (anios === "" || isNaN(anios) || parseInt(anios) < 1 || parseInt(anios) > 30) {
             camposInvalidos.push(aniosInput);
             mensaje = "Ingresa un número de años entre 1 y 30";
+        }
+        else if (tasa === "" || isNaN(tasa) || parseFloat(tasa) < 0 || parseFloat(tasa) > 100) {
+            camposInvalidos.push(tasaInput);
+            mensaje = "Ingresa una tasa entre 0 y 100";
         }
         else if (cobertura === "" || isNaN(cobertura) || parseInt(cobertura) < 0 || parseInt(cobertura) > 99999) {
             camposInvalidos.push(coberturaInput);
