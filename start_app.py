@@ -43,39 +43,38 @@ if not os.path.exists(VENV_DIR):
     print("Creando entorno virtual...")
     subprocess.check_call([PYTHON_BIN, "-m", "venv", "venv"])
 
-
-# -----------------------------------
-# 2. Instalar dependencias
-# -----------------------------------
-print("Instalando dependencias...")
-subprocess.check_call([VENV_PY, "-m", "pip", "install", "--upgrade", "pip"])
-subprocess.check_call([VENV_PY, "-m", "pip", "install", "-r", os.path.join(BASE_DIR, "requirements.txt")])
-
-
-# -----------------------------------
-# 3. Instalar Chromium para Playwright
-# -----------------------------------
-print("Instalando Chromium para Playwright...")
-subprocess.call([VENV_PY, "-m", "playwright", "install", "chromium"])
+    # -----------------------------------
+    # 2. Instalar dependencias
+    # -----------------------------------
+    print("Instalando dependencias...")
+    subprocess.check_call([VENV_PY, "-m", "pip", "install", "--upgrade", "pip"])
+    subprocess.check_call([VENV_PY, "-m", "pip", "install", "-r", os.path.join(BASE_DIR, "requirements.txt")])
 
 
-# -----------------------------------
-# 4. Migraciones
-# -----------------------------------
-print("Creando migraciones...")
-subprocess.call([VENV_PY, "manage.py", "makemigrations", "app"])
-
-print("Aplicando migraciones...")
-subprocess.call([VENV_PY, "manage.py", "migrate"])
+    # -----------------------------------
+    # 3. Instalar Chromium para Playwright
+    # -----------------------------------
+    print("Instalando Chromium para Playwright...")
+    subprocess.call([VENV_PY, "-m", "playwright", "install", "chromium"])
 
 
-# -----------------------------------
-# 5. Fixture inicial (opcional)
-# -----------------------------------
-fixture_path = os.path.join(BASE_DIR, "app", "fixtures", "initial_data.json")
-if os.path.exists(fixture_path):
-    print("Cargando datos iniciales...")
-    subprocess.call([VENV_PY, "manage.py", "loaddata", fixture_path])
+    # -----------------------------------
+    # 4. Migraciones
+    # -----------------------------------
+    print("Creando migraciones...")
+    subprocess.call([VENV_PY, "manage.py", "makemigrations", "app"])
+
+    print("Aplicando migraciones...")
+    subprocess.call([VENV_PY, "manage.py", "migrate"])
+
+
+    # -----------------------------------
+    # 5. Fixture inicial (opcional)
+    # -----------------------------------
+    fixture_path = os.path.join(BASE_DIR, "app", "fixtures", "initial_data.json")
+    if os.path.exists(fixture_path):
+        print("Cargando datos iniciales...")
+        subprocess.call([VENV_PY, "manage.py", "loaddata", fixture_path])
 
 
 # -----------------------------------
