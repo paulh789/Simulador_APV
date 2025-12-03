@@ -17,7 +17,7 @@
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
-Este proyecto es un simulador web pensado para facilitar el trabajo de una ejecutiva de una empresa financiera que contacta potenciales clientes para ofrecer planes de Ahorro Previsional Voluntario. Esta plataforma centraliza las tareas que anteriormente la ejecutiva realizaba en distintas fuentes, esperando reducir el tiempo que le toma reunir y enviar la información necesaria a los clientes.
+Este proyecto es un simulador web pensado para facilitar el trabajo de una ejecutiva de una empresa financiera que contacta potenciales clientes para ofrecer planes de Ahorro Previsional Voluntario. Esta plataforma centraliza las tareas que anteriormente la ejecutiva realizaba en distintas fuentes, por lo que se espera reducir el tiempo que le toma reunir y enviar la información necesaria a los clientes.
 
 La aplicación permite:
 * Simular beneficios tributarios del APV en base a renta y aporte del cliente.
