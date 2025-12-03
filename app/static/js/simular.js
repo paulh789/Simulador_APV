@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const dataElem = document.getElementById("datos");
 
     // --- Data ---
-    const valorUF = parseFloat(dataElem.dataset.uf);
-    const valorUTM = parseFloat(dataElem.dataset.utm);
+    const valorUF = parseFloat(dataElem.dataset.uf.replace(",", "."));
+    const valorUTM = parseFloat(dataElem.dataset.utm.replace(",", "."));
     const tramos = JSON.parse(dataElem.dataset.tramos);
 
     // --- Formatear CLP ---
