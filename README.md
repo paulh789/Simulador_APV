@@ -43,8 +43,8 @@ Además, se utiliza Playwright+Chromium para la generación de los PDF.
 
 ### Indicadores diarios / Scraping
 Cada vez que se corre el servidor se revisa si los indicadores y la tabla de impuestos están al día. En caso contrario se actualizan de la siguiente manera:
-* Para los indicadores se visita la API de mindicador.cl.
-* Para la tabla de impuesto único se hace web scraping de la página del <a href="https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto2025.htm">SII</a>.
+* Para los indicadores se visita la API de [mindicador.cl](https://mindicador.cl/).
+* Para la tabla de impuesto único se hace web scraping de la página del [SII](https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto2025.htm).
 
 Esto permite realizar los cálculos de las simulaciones con datos actualizados.
 <p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
