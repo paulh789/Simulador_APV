@@ -596,7 +596,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <td style="display: ${displayAporte}">${f[2] === 0 ? "—" : "$" + formatoCL(f[2])}</td>
                                     <td>$${formatoCL(f[3])}</td>
                                     <td>$${formatoCL(f[4])}</td>
-                                    <td>${f[5]}</td>
+                                    <td>${formatoCL(f[5], 2)}</td>
                                     <td class="capital-final-td">$${formatoCL(f[6])}</td>
                                 </tr>
                             `).join("")}
