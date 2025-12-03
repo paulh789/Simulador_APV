@@ -7,6 +7,7 @@ import socket
 PYTHON_BIN = sys.executable
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 APP = False
 
 def puerto_ocupado(port=8000):
@@ -21,13 +22,13 @@ if puerto_ocupado(8000):
     print("Servidor ya activo. Abriendo navegador...")
     if APP:
         subprocess.Popen([
-            EDGE_PATH,
+            CHROME_PATH,
             "--app=http://127.0.0.1:8000/",
             "--new-window"
         ])
     else:
         subprocess.Popen([
-            EDGE_PATH,
+            CHROME_PATH,
             "http://127.0.0.1:8000/"
         ])
     sys.exit(0)
@@ -99,13 +100,13 @@ time.sleep(2)
 print("Abriendo navegador...")
 if APP:
     subprocess.Popen([
-        EDGE_PATH,
+        CHROME_PATH,
         "--app=http://127.0.0.1:8000/",
         "--new-window"
     ])
 else:
     subprocess.Popen([
-        EDGE_PATH,
+        CHROME_PATH,
         "http://127.0.0.1:8000/"
     ])
 
