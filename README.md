@@ -18,6 +18,9 @@
 ## Sobre el proyecto
 
 Este proyecto es un simulador web pensado para facilitar el trabajo de una ejecutiva de una empresa financiera que contacta potenciales clientes para ofrecer planes de Ahorro Previsional Voluntario. Esta plataforma centraliza las tareas que anteriormente la ejecutiva realizaba en distintas fuentes, por lo que se espera reducir el tiempo que le toma reunir y enviar la información necesaria a los clientes.
+<div align="center">
+<img src="img/screenshots/simular.png" alt="Logo">
+</div>
 
 La aplicación permite:
 * Simular beneficios tributarios del APV en base a renta y aporte del cliente.
@@ -76,6 +79,22 @@ Además, como Playwright y Chroimum son pesados, está también el archivo `star
 ```
 
 <p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
+
+## Capturas de pantalla
+
+<div align="center">
+<img src="img/screenshots/simular_inputs.png" alt="Logo">
+
+<img src="img/screenshots/simulacion_preview.png" alt="Logo">
+
+<img src="img/screenshots/simulacion_guardada.png" alt="Logo">
+
+<img src="img/screenshots/indicadores_conversor.png" alt="Logo">
+
+</div>
+
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
+
 
 ## Autor
 **Paul Holmer**
