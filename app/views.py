@@ -36,8 +36,12 @@ def pdf_simulacion(request):
     filename = f"{uuid.uuid4()}.pdf"
     pdf_path = os.path.join("media/temp", filename)
 
-    # Crear el PDF con Playwright
-    render_pdf_from_html(html_string, pdf_path)
+    # Intentar generar el PDF con Playwright
+    pdf_ok = render_pdf_from_html(html_string, pdf_path)
+
+    if not pdf_ok:
+        # Playwright no instalado, se retorna el HTML
+        return HttpResponse(html_string, content_type="text/html")
 
     # Devolver el PDF como descarga
     with open(pdf_path, "rb") as f:

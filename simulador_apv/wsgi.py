@@ -1,5 +1,5 @@
 """
-WSGI config for simulador_banco project.
+WSGI config for simulador_apv project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simulador_banco.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simulador_apv.settings')
 
 application = get_wsgi_application()

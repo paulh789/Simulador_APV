@@ -3,7 +3,11 @@ import requests
 from bs4 import BeautifulSoup
 from app.models import *
 import json
-from playwright.sync_api import sync_playwright
+try:
+    from playwright.sync_api import sync_playwright
+    PLAYWRIGHT_ENABLED = True
+except ImportError:
+    PLAYWRIGHT_ENABLED = False
 
 def actualizar_datos():
     """
@@ -201,21 +205,25 @@ def guardar_tabla_impuestos(tramos):
 def render_pdf_from_html(html_content: str, pdf_path: str):
     """
     Genera un PDF en la ruta especificada a partir de un HTML.
+    Retorna True si se logra generar el PDF y False en caso contrario.
     """
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        page = browser.new_page()
+    if PLAYWRIGHT_ENABLED:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page()
 
-        # Cargar el HTML directamente
-        page.set_content(html_content, wait_until="networkidle")
+            # Cargar el HTML directamente
+            page.set_content(html_content, wait_until="networkidle")
 
-        # Exportar el PDF
-        page.pdf(
-            path=pdf_path,
-            format="A4",
-            scale=0.825,
-            margin={"top": "40px", "bottom": "40px", "left": "20px", "right": "20px"},
-            print_background=True,
-        )
+            # Exportar el PDF
+            page.pdf(
+                path=pdf_path,
+                format="A4",
+                scale=0.825,
+                margin={"top": "40px", "bottom": "40px", "left": "20px", "right": "20px"},
+                print_background=True,
+            )
 
-        browser.close()
+            browser.close()
+            return True
+    return False

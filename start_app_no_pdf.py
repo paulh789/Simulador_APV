@@ -21,13 +21,7 @@ if not os.path.exists(VENV_DIR):
     # --------------------------
     print("Instalando dependencias...")
     subprocess.check_call([os.path.join(VENV_DIR, "Scripts", "python.exe"), "-m", "pip", "install", "--upgrade", "pip"])
-    subprocess.check_call([os.path.join(VENV_DIR, "Scripts", "python.exe"), "-m", "pip", "install", "-r", os.path.join(BASE_DIR, "requirements.txt")])
-
-    # --------------------------
-    # Instalar Chromium para Playwright
-    # --------------------------
-    print("Instalando Chromium para Playwright...")
-    subprocess.check_call([os.path.join(VENV_DIR, "Scripts", "python.exe"), "-m", "playwright", "install", "chromium"])
+    subprocess.check_call([os.path.join(VENV_DIR, "Scripts", "python.exe"), "-m", "pip", "install", "-r", os.path.join(BASE_DIR, "requirements_no_pdf.txt")])
 
     # --------------------------
     # Crear migraciones
@@ -48,7 +42,7 @@ if not os.path.exists(VENV_DIR):
     if os.path.exists(fixture_path):
         print("Cargando datos iniciales...")
         subprocess.check_call([os.path.join(VENV_DIR, "Scripts", "python.exe"), "manage.py", "loaddata", fixture_path])
-
+        
 # --------------------------
 # Llamar a actualizar_datos
 # --------------------------

@@ -596,7 +596,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <td style="display: ${displayAporte}">${f[2] === 0 ? "—" : "$" + formatoCL(f[2])}</td>
                                     <td>$${formatoCL(f[3])}</td>
                                     <td>$${formatoCL(f[4])}</td>
-                                    <td>${f[5]}</td>
+                                    <td>${formatoCL(f[5], 2)}</td>
                                     <td class="capital-final-td">$${formatoCL(f[6])}</td>
                                 </tr>
                             `).join("")}
@@ -668,15 +668,33 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json", "X-CSRFToken": csrftoken },
             body: JSON.stringify(data)
         }) // enviar POST a backend
-        .then(res => res.blob()) // backend responde con PDF
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = generarNombrePDF();
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }) // crear url temporal para el PDF y simular click para descargar
+        .then(async res => {
+            const contentType = res.headers.get("Content-Type");
+
+            if (contentType && contentType.includes("application/pdf")) {
+                // PDF
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = generarNombrePDF();
+                a.click();
+                window.URL.revokeObjectURL(url);
+                return;
+            } // crear url temporal para el PDF y simular click para descargar
+
+            if (contentType && contentType.includes("text/html")) {
+                // HTML (Playwright no instalado)
+                const html = await res.text();
+
+                // Abrir en una nueva pestaña
+                const tab = window.open();
+                tab.document.write(html);
+                tab.document.close();
+                tab.alert("Playwright no está instalado, no se pudo generar el PDF.\nSe mostrará la vista HTML.")
+                return;
+            }
+        })
         .catch(err => {
             alert("Error al generar PDF");
             console.error(err);
