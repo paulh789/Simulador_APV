@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Crear venv si no existe
 # --------------------------
 VENV_DIR = os.path.join(BASE_DIR, "venv")
-ACTIVATE_BAT = os.path.join(VENV_DIR, "Scripts", "activate.bat")
 
 if not os.path.exists(VENV_DIR):
     print("Creando entorno virtual...")

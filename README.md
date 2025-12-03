@@ -4,7 +4,7 @@
 <br />
 <div align="center">
 
-  <img src="logo-64x64.png" alt="Logo" width="64" height="64">
+  <a href="https://github.com/paulh789/Simulador_APV"><img src="img/logo-64x64.png" alt="Logo" width="64" height="64"></a>
 
   <h3 align="center">Simulador APV</h3>
 
