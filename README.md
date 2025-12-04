@@ -73,7 +73,7 @@ Para correrlo:
 ```
 En Windows, alternativamente se puede hacer doble click en el archivo `start_app.bat`.
 
-Además, como Playwright y Chromium son pesados, está también el archivo `start_app_no_pdf.py` que salta su instalación, lo que permite usar la aplicación pero sin la funcionalidad de generación de PDFs:
+Además, como Playwright y Chromium son pesados, se puede correr también el archivo `start_app_no_pdf.py` que salta su instalación, lo que permite usar la aplicación pero sin la funcionalidad de generación de documentos PDF:
 ```sh
    python start_app_no_pdf.py
 ```
