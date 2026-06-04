@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function abrirModal(renta, tipoAporte, aporteCLP, aporteUF, anios, tasa, cobertura) {
 
         // datos régimen tributario
-        const aporteStr = `$${formatoCL(aporteCLP)} (${formatoCL(aporteUF, 1)} UF)`;
+        const aporteStr = `$${formatoCL(aporteCLP)} (${formatoCL(aporteUF, 2)} UF)`;
         let aporteAnual;
         if (tipoAporte === "mensual") {
             aporteAnual = aporteCLP*12;
