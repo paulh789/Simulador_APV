@@ -20,21 +20,55 @@ document.addEventListener("DOMContentLoaded", () => {
     const valorUTM = parseFloat(dataElem.dataset.utm.replace(",", "."));
     const tramos = JSON.parse(dataElem.dataset.tramos);
 
-    // --- Formatear CLP ---
-    let clpTimeout; // delay de formateo
-    const formatearCLP = (input) => {
-        clearTimeout(clpTimeout); // cancelar timeout previo
-        clpTimeout = setTimeout(() => {
-            const soloNumeros = input.value.replace(/\./g, "").replace(/\D/g, "");
-            if (soloNumeros === "") {
+    // --- Formatear CLP y UF ---
+    let numTimeout; // delay de formateo
+    const formatearNum = (input, moneda) => {
+        clearTimeout(numTimeout);
+        numTimeout = setTimeout(() => {
+            const valor = input.value;
+            // Separar por la primera coma
+            const [parteEnteraRaw = "", parteDecimalRaw] = valor.split(",");
+            // Limpiar parte entera
+            let parteEnteraNumerica = parteEnteraRaw
+                .replace(/\./g, "")
+                .replace(/\D/g, "");
+            // Limpiar parte decimal
+            let parteDecimal = (parteDecimalRaw ?? "")
+                .replace(/\D/g, "")
+                .slice(0, 2);
+            if (parteEnteraNumerica === "" && parteDecimalRaw === undefined) {
                 input.value = "";
                 return;
             }
-            input.value = parseInt(soloNumeros, 10).toLocaleString("es-CL");
-            if (input.style.borderColor != "#ccc") {
+            // Validar límite
+            const numero = parseFloat(
+                `${parteEnteraNumerica || "0"}.${parteDecimal || "0"}`
+            );
+            const limite = moneda === "UF"
+                ? 9999
+                : 999999999;
+            if (numero > limite) {
+                parteEnteraNumerica = String(Math.trunc(limite));
+                if (moneda === "UF") {
+                    parteDecimal = "";
+                }
+            }
+            const parteEnteraFormateada =
+                parteEnteraNumerica === ""
+                    ? ""
+                    : parseInt(parteEnteraNumerica, 10).toLocaleString("es-CL");
+            // Caso 1: no hay coma
+            if (parteDecimalRaw === undefined && parteDecimal === "") {
+                input.value = parteEnteraFormateada;
+            }
+            // Caso 2 y 3: hay coma
+            else {
+                input.value = `${parteEnteraFormateada},${parteDecimal}`;
+            }
+            if (input.style.borderColor !== "#ccc") {
                 input.style.borderColor = "#ccc";
             }
-        }, 125); // delay de 125 ms
+        }, 125);
     };
 
     // --- Formatear tasa ---
@@ -63,25 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (input.style.borderColor != "#ccc") {
             input.style.borderColor = "#ccc";
         }
-    };
-
-    // --- Formatear cobertura ---
-    let coberturaTimeout;
-    function formatearCobertura(input) {
-        clearTimeout(coberturaTimeout);
-        coberturaTimeout = setTimeout(() => {
-            let v = input.value.replace(/\./g, "").replace(/\D/g, "");
-            if (v === "") { input.value = ""; return; }
-
-            let num = parseInt(v, 10);
-            if (num < 0) num = 0;
-            if (num > 99999) num = 99999;
-
-            input.value = num.toLocaleString("es-CL");
-            if (input.style.borderColor != "#ccc") {
-                input.style.borderColor = "#ccc";
-            }
-        }, 120);
     };
 
     // --- Actualizar preview ---
@@ -119,21 +134,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---- Eventos ----
-    rentaInput.addEventListener("input", () => formatearCLP(rentaInput));
+    rentaInput.addEventListener("input", () => formatearNum(rentaInput, "CLP"));
+    rentaInput.maxLength = 14;
 
     aporteInput.addEventListener("input", () => {
-        formatearCLP(aporteInput);
+        formatearNum(aporteInput, "UF");
         actualizarPreview();
     });
 
-    // cuando cambie moneda actualizar placeholder y preview
+    // cuando cambie la moneda actualizar placeholder, preview y tipo de formateo del aporte
     monedaAporteSelect.addEventListener("change", () => {
         if (monedaAporteSelect.value === "UF") {
             aporteInput.placeholder = "Ej: 10";
-            aporteInput.maxLength = 6;
+            aporteInput.maxLength = 8;
+            aporteInput.addEventListener("input", () => {
+                formatearNum(aporteInput, "UF");
+                actualizarPreview();
+            });
         } else {
             aporteInput.placeholder = "Ej: 200.000";
-            aporteInput.maxLength = 12;
+            aporteInput.maxLength = 14;
+            aporteInput.addEventListener("input", () => {
+                formatearNum(aporteInput, "CLP");
+                actualizarPreview();
+            });
         }
         aporteInput.value = "";
         preview.textContent = "—";
@@ -141,7 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tasaInput.addEventListener('input', () => formatearTasa(tasaInput));
     aniosInput.addEventListener("input", () => formatearAnios(aniosInput));
-    coberturaInput.addEventListener("input", () => formatearCobertura(coberturaInput));
+    coberturaInput.addEventListener("input", () => formatearNum(coberturaInput, "UF"));
+    coberturaInput.maxLength = 8;
 
     // --- Elementos modal ---
     const modal = document.getElementById("modal");
@@ -441,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // datos rentabilidad
         datoAnios.textContent = `${anios} años`;
         datoTasa.textContent = `${formatoCL(tasa, 2)}%`;
-        datoCobertura.textContent = `${formatoCL(cobertura)} UF`;
+        datoCobertura.textContent = `${formatoCL(cobertura, 2)} UF`;
 
         // tabla de rentabilidad
         const tabla = crearTablaRentabilidad(tipoAporte, aporteAnual, tasa/100, 9, anios);
@@ -573,8 +598,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <h2>Rentabilidad</h2>
                     <div class="resultados-datos">
                         <div class="dato-izq"><strong>Período:</strong> ${sim.inputs.anios} años</div>
-                        <div class="dato-cen"><strong>Tasa de rentabilidad:</strong> ${sim.inputs.tasaRentabilidad}%</div>
-                        <div class="dato-der"><strong>Cobertura:</strong> ${sim.inputs.cobertura} UF</div>
+                        <div class="dato-cen"><strong>Tasa de rentabilidad:</strong> ${formatoCL(sim.inputs.tasaRentabilidad, 2)}%</div>
+                        <div class="dato-der"><strong>Cobertura:</strong> ${formatoCL(sim.inputs.cobertura, 2)} UF</div>
                     </div>
                     <table class="tabla-rentabilidad">
                         <thead>
@@ -668,15 +693,33 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json", "X-CSRFToken": csrftoken },
             body: JSON.stringify(data)
         }) // enviar POST a backend
-        .then(res => res.blob()) // backend responde con PDF
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = generarNombrePDF();
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }) // crear url temporal para el PDF y simular click para descargar
+        .then(async res => {
+            const contentType = res.headers.get("Content-Type");
+
+            if (contentType && contentType.includes("application/pdf")) {
+                // PDF
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = generarNombrePDF();
+                a.click();
+                window.URL.revokeObjectURL(url);
+                return;
+            } // crear url temporal para el PDF y simular click para descargar
+
+            if (contentType && contentType.includes("text/html")) {
+                // HTML (Playwright no instalado)
+                const html = await res.text();
+
+                // Abrir en una nueva pestaña
+                const tab = window.open();
+                tab.document.write(html);
+                tab.document.close();
+                tab.alert("Playwright no está instalado, no se pudo generar el PDF.\nSe mostrará la vista HTML.")
+                return;
+            }
+        })
         .catch(err => {
             alert("Error al generar PDF");
             console.error(err);
@@ -725,13 +768,13 @@ document.addEventListener("DOMContentLoaded", () => {
         errorMsg.style.display = "none";
 
         // obtener valores limpios
-        const renta = rentaInput.value.trim().replace(/\./g, "");
+        const renta = rentaInput.value.trim().replace(/\./g, "").replace(",", ".");
         const tipoAporte = tipoAporteSelect.value;
         const monedaAporte = monedaAporteSelect.value;
         const aporte = aporteInput.value.trim().replace(/\./g, "").replace(",", ".");
         const tasa = tasaInput.value.trim().replace(",", ".");
         const anios = aniosInput.value.trim();
-        const cobertura = coberturaInput.value.trim().replace(/\./g, "");
+        const cobertura = coberturaInput.value.trim().replace(/\./g, "").replace(",", ".");
 
         // validaciones básicas
         let camposInvalidos = [];
@@ -753,7 +796,7 @@ document.addEventListener("DOMContentLoaded", () => {
             camposInvalidos.push(tasaInput);
             mensaje = "Ingresa una tasa entre 0 y 100";
         }
-        else if (cobertura === "" || isNaN(cobertura) || parseInt(cobertura) < 0 || parseInt(cobertura) > 99999) {
+        else if (cobertura === "" || isNaN(cobertura) || parseFloat(cobertura) < 0 || parseFloat(cobertura) >= 100000) {
             camposInvalidos.push(coberturaInput);
             mensaje = "Ingresa una cobertura válida entre 0 y 99.999 UF";
         }
@@ -779,7 +822,7 @@ document.addEventListener("DOMContentLoaded", () => {
             aporteUF = parseFloat(aporte);
             aporteCLP = parseInt(aporte*valorUF);
         }
-        const coberturaNum = parseInt(cobertura);
+        const coberturaNum = parseFloat(cobertura);
         const aniosNum = parseInt(anios);
         const tasaNum = parseFloat(tasa);
 
