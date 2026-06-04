@@ -99,25 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // --- Formatear cobertura ---
-    let coberturaTimeout;
-    function formatearCobertura(input) {
-        clearTimeout(coberturaTimeout);
-        coberturaTimeout = setTimeout(() => {
-            let v = input.value.replace(/\./g, "").replace(/\D/g, "");
-            if (v === "") { input.value = ""; return; }
-
-            let num = parseInt(v, 10);
-            if (num < 0) num = 0;
-            if (num > 99999) num = 99999;
-
-            input.value = num.toLocaleString("es-CL");
-            if (input.style.borderColor != "#ccc") {
-                input.style.borderColor = "#ccc";
-            }
-        }, 120);
-    };
-
     // --- Actualizar preview ---
     function actualizarPreview() {
         const moneda = monedaAporteSelect.value;
@@ -378,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function abrirModal(renta, tipoAporte, aporteCLP, aporteUF, anios, tasa, cobertura) {
 
         // datos régimen tributario
-        const aporteStr = `$${formatoCL(aporteCLP)} (${formatoCL(aporteUF, 1)} UF)`;
+        const aporteStr = `$${formatoCL(aporteCLP)} (${formatoCL(aporteUF, 2)} UF)`;
         let aporteAnual;
         if (tipoAporte === "mensual") {
             aporteAnual = aporteCLP*12;
