@@ -46,7 +46,7 @@ def actualizar_datos():
     if not ultimo_tramo or f"{ultimo_tramo.anio}-{ultimo_tramo.mes:02}" < now.strftime('%Y-%m'):
         try:
             # Scraping de sii.cl
-            tramos = scrapear_tabla_impuestos(now.year)
+            tramos = scrapear_tabla_impuestos(now.year, ultimo_tramo.anio, ultimo_tramo.mes)
             guardar_tabla_impuestos(tramos)
         except Exception as e:
             print("Error al actualizar tabla:", e)
@@ -119,11 +119,11 @@ def num_mes_to_nombre(num_mes):
     meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
     return meses[num_mes-1]
 
-def scrapear_tabla_impuestos(anio):
+def scrapear_tabla_impuestos(anio_act, anio_db, mes_db):
     """
     Obtiene los tramos de la tabla de impuesto único desde la página web del SII.
     """
-    url = f"https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto{anio}.htm"
+    url = f"https://www.sii.cl/valores_y_fechas/impuesto_2da_categoria/impuesto{anio_act}.htm"
     
     headers = {
         "User-Agent": (
@@ -143,7 +143,7 @@ def scrapear_tabla_impuestos(anio):
     # Buscar el div que contiene la tabla del último mes
     meses_divs = soup.find_all("div", class_="meses")
     if not meses_divs:
-        raise ValueError("No se encontraron divs de meses en la página")
+        raise Exception("No se encontraron divs de meses en la página")
 
     # Elegimos el último div visible
     ultimo_div = meses_divs[0]
@@ -151,17 +151,21 @@ def scrapear_tabla_impuestos(anio):
     # Extraemos año y mes del h3
     h3 = ultimo_div.find("h3")
     if not h3:
-        raise ValueError("No se encontró h3 con mes y año")
+        raise Exception("No se encontró h3 con mes y año")
     
     # Ej: "Noviembre 2025"
     mes_text, anio_text = h3.text.strip().split(" ")
     mes_num = nombre_mes_to_num(mes_text)
     anio_num = int(anio_text)
 
+    # Verificamos que la tabla está actualizada
+    if f"{anio_num}-{mes_num:02}" <= f"{anio_db}-{mes_db:02}":
+        raise Exception("La tabla no está actualizada en sii.cl")
+
     # Encontramos la tabla
     tabla = ultimo_div.find("table")
     if not tabla:
-        raise ValueError("No se encontró la tabla en el div")
+        raise Exception("No se encontró la tabla en el div")
 
     # Recorremos filas
     tramos = []
