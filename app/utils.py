@@ -43,7 +43,7 @@ def actualizar_datos():
     # Tabla IU
     ultimo_tramo = TramoImpuesto.objects.last()
     # Si no hay datos guardados aún o están desactualizados:
-    if not ultimo_tramo or f"{ultimo_tramo.anio}-{ultimo_tramo.mes}" < now.strftime('%Y-%m'):
+    if not ultimo_tramo or f"{ultimo_tramo.anio}-{ultimo_tramo.mes:02}" < now.strftime('%Y-%m'):
         try:
             # Scraping de sii.cl
             tramos = scrapear_tabla_impuestos(now.year)
